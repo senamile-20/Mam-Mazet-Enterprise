@@ -241,6 +241,76 @@ textarea{resize:vertical;}
   .gallery-grid{grid-template-columns:1fr;}
   .booking-form{padding:20px;}
 }
+
+/* ── Gallery ───────────────────────────────────────────── */
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:22px;
+}
+.gallery-item{
+  position:relative;overflow:hidden;border-radius:3px;
+  border:1px solid var(--canvas-deep);
+  background:var(--canvas-deep);
+  aspect-ratio:4 / 5;
+  box-shadow:0 1px 2px rgba(28,37,48,0.06);
+  transition:box-shadow .3s ease, transform .3s ease;
+}
+.gallery-item:hover{
+  box-shadow:0 12px 26px rgba(28,37,48,0.16);
+  transform:translateY(-4px);
+}
+.gallery-item img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .55s ease;
+}
+.gallery-item:hover img{transform:scale(1.06);}
+
+.gallery-caption{
+  position:absolute;left:0;right:0;bottom:0;
+  background:linear-gradient(to top,
+    rgba(28,37,48,0.92),
+    rgba(28,37,48,0.55) 55%,
+    transparent);
+  color:var(--white);
+  font-family:var(--sans);
+  font-size:13px;font-weight:500;letter-spacing:0.01em;
+  padding:42px 14px 12px;
+  text-align:left;pointer-events:none;
+  opacity:0;transform:translateY(6px);
+  transition:opacity .3s ease, transform .3s ease;
+}
+.gallery-item:hover .gallery-caption,
+.gallery-item:focus-within .gallery-caption{
+  opacity:1;transform:translateY(0);
+}
+@media (hover:none){
+  .gallery-caption{opacity:1;transform:none;}
+}
+
+/* hidden items before "View more" */
+.gallery-hidden{display:none;}
+
+/* View more button row */
+.gallery-actions{
+  display:flex;justify-content:center;
+  margin-top:44px;
+}
+.gallery-toggle{
+  min-width:220px;justify-content:center;
+  border-color:var(--gold);color:var(--gold);
+  font-weight:600;letter-spacing:0.02em;
+}
+.gallery-toggle:hover{
+  background:var(--gold);border-color:var(--gold);
+  color:var(--white);
+}
+
+/* On mobile, tighten spacing a bit */
+@media (max-width:480px){
+  .gallery-grid{gap:14px;}
+  .gallery-actions{margin-top:32px;}
+}
 </style>
 </head>
 <body>
@@ -307,14 +377,13 @@ textarea{resize:vertical;}
       <p>Four disciplines, one workshop. Every order is measured, cut and finished under the same roof.</p>
     </div>
 
-    <div class="service-list">
-      <article class="service-row">
-        <div class="service-label">School Uniforms</div>
-        <div class="service-body">
-          <h3>Uniforms built for the school day</h3>
-          <p>Full uniform ranges cut to your school's exact colours and specification — blazers, tunics, trousers, skirts and PE kit sized for growing learners and finished to survive a full year of break times.</p>
-        </div>
-      </article>
+	  <article class="service-row">
+	     <div class="service-label">Uniforms</div>
+	     <div class="service-body">
+		  <h3>Every uniform, made to your standard</h3>
+		  <p>School, church, security, corporate, hospitality, workwear, etc.. if it's a uniform, we cut it. Every order is made to your exact colours, specification and sizing, from learners' blazers and PE kit to staff shirts, security trousers and choir robes, finished to hold their shape through a full year of daily wear.</p>
+   	     </div>
+    </article>
 
       <article class="service-row">
         <div class="service-label">Custom Embroidery</div>
@@ -347,42 +416,93 @@ textarea{resize:vertical;}
   <div class="wrap">
     <div class="section-head">
       <h2>The work</h2>
-      <p>A look at recent orders school uniforms, embroidered badges, printed wear and custom finishing.</p>
+      <p>A look at recent orders — school uniforms, embroidered badges, printed wear, ceremonial shawls and custom finishing.</p>
     </div>
 
-    <div class="gallery-grid">
+    <div class="gallery-grid" id="galleryGrid">
+
+      <!-- ── HERO PIECES (shown first) ── -->
       <div class="gallery-item">
-        <img src="images/dress.jpg" alt="Green gingham school dress with embroidered crest">
-        <div class="gallery-caption">Green gingham school dress</div>
+        <img src="images/guju-secondary-jacket.jpeg" alt="Green and yellow bomber jacket with Guju Secondary School embroidered crest" loading="lazy">
+        <div class="gallery-caption">Guju Secondary School jacket</div>
       </div>
       <div class="gallery-item">
-        <img src="images/polo-printed.jpg" alt="White polo with printed name and embroidered tree logo">
-        <div class="gallery-caption">Printed &amp; embroidered polo</div>
+        <img src="images/alfred-nzo-badge.jpeg" alt="Embroidered Alfred Nzo District Municipality crest" loading="lazy">
+        <div class="gallery-caption">Alfred Nzo District Municipality badge</div>
       </div>
       <div class="gallery-item">
-        <img src="images/backpack.jpg" alt="Navy school backpack with embroidered crest">
-        <div class="gallery-caption">Embroidered school backpack</div>
+        <img src="images/sibongile-gingham-dress.jpeg" alt="Green gingham school dress with Sibongile C.B. School embroidered crest" loading="lazy">
+        <div class="gallery-caption">Sibongile C.B. School gingham dress</div>
       </div>
       <div class="gallery-item">
-        <img src="images/epaulettes.jpg" alt="Navy epaulettes with embroidered Efaye Primary crests">
-        <div class="gallery-caption">Embroidered school epaulettes</div>
+        <img src="images/tholizwe-jersey.jpeg" alt="Black V-neck jersey with yellow stripes and Tholizwe Secondary School crest" loading="lazy">
+        <div class="gallery-caption">Tholizwe Secondary jersey</div>
       </div>
       <div class="gallery-item">
-        <img src="images/jersey.jpg" alt="Black V-neck school jersey with embroidered crest">
-        <div class="gallery-caption">Embroidered school jersey</div>
+        <img src="images/efaye-blazer.jpeg" alt="Black school blazer with light blue collar and Efaye Primary School embroidered crest" loading="lazy">
+        <div class="gallery-caption">Efaye Primary School blazer</div>
       </div>
       <div class="gallery-item">
-        <img src="images/beanie.jpg" alt="Black beanie with embroidered Tholizwe Secondary crest">
-        <div class="gallery-caption">Embroidered school beanie</div>
+        <img src="images/mka-d-nkosi-shawl.jpeg" alt="White fur shawl embroidered with Mka D Nkosi, A Promise Kept" loading="lazy">
+        <div class="gallery-caption">Mka D Nkosi ceremonial shawl</div>
       </div>
       <div class="gallery-item">
-        <img src="images/shawl.jpg" alt="White fur shawl with embroidered floral design">
-        <div class="gallery-caption">Embroidered ceremonial shawl</div>
+        <img src="images/mabiyela-shawl.jpeg" alt="White fur shawl with MaBiyela ka Nqwane floral embroidery" loading="lazy">
+        <div class="gallery-caption">MaBiyela ka Nqwane shawl</div>
       </div>
       <div class="gallery-item">
-        <img src="images/polo-blue.jpg" alt="Blue polo with embroidered name and KZN Health logo">
-        <div class="gallery-caption">Embroidered corporate polo</div>
+        <img src="images/kzn-health-polo.jpeg" alt="Blue polo with embroidered name S Magoso and KZN Health logo" loading="lazy">
+        <div class="gallery-caption">KZN Health embroidered polo</div>
       </div>
+      <div class="gallery-item">
+        <img src="images/emfulamthathu-backpack.jpeg" alt="Navy school backpack with Emfulamthathu Primary School embroidered crest" loading="lazy">
+        <div class="gallery-caption">Emfulamthathu Primary backpack</div>
+      </div>
+
+      <!-- ── MORE (hidden until "View more") ── -->
+      <div class="gallery-item gallery-hidden">
+        <img src="images/ikhwezi-tracksuit.jpeg" alt="Navy tracksuits and jersey with Ikhwezi C.B. School embroidered crests" loading="lazy">
+        <div class="gallery-caption">Ikhwezi C.B. School tracksuit</div>
+      </div>
+      <div class="gallery-item gallery-hidden">
+        <img src="images/tholizwe-beanie.jpeg" alt="Black beanie with Tholizwe Secondary School embroidered crest" loading="lazy">
+        <div class="gallery-caption">Tholizwe Secondary beanie</div>
+      </div>
+      <div class="gallery-item gallery-hidden">
+        <img src="images/makhadeni-creche-shorts.jpeg" alt="Navy crèche shorts with Makhadeni Crèche ABC embroidered logo" loading="lazy">
+        <div class="gallery-caption">Makhadeni Crèche shorts</div>
+      </div>
+      <div class="gallery-item gallery-hidden">
+        <img src="images/abelaphi-base-polo.jpeg" alt="White polo with Abelaphi Base West printed logo and personalised name" loading="lazy">
+        <div class="gallery-caption">Abelaphi Base West printed polo</div>
+      </div>
+      <div class="gallery-item gallery-hidden">
+        <img src="images/queen-king-tees.jpeg" alt="White Queen and King printed t-shirts with lace doily" loading="lazy">
+        <div class="gallery-caption">Queen &amp; King printed tees</div>
+      </div>
+      <div class="gallery-item gallery-hidden">
+        <img src="images/umsamo-hoodie.jpeg" alt="Grey hoodie with Umsamo Trading Solutions embroidered logo" loading="lazy">
+        <div class="gallery-caption">Umsamo Trading Solutions hoodie</div>
+      </div>
+      <div class="gallery-item gallery-hidden">
+        <img src="images/schoolgirl-walking.jpeg" alt="Learner in blue school dress and backpack walking to school" loading="lazy">
+        <div class="gallery-caption">Everyday schoolwear</div>
+      </div>
+      <div class="gallery-item gallery-hidden">
+        <img src="images/head-girl-beanie.jpeg" alt="Two learners in blue school blazers, one wearing an embroidered Head Girl badge and black beanie" loading="lazy">
+        <div class="gallery-caption">Head Girl badge &amp; beanie</div>
+      </div>
+      <div class="gallery-item gallery-hidden">
+        <img src="images/grade-r-tracksuits.jpeg" alt="Four learners wearing navy, yellow and white school tracksuits outdoors" loading="lazy">
+        <div class="gallery-caption">Grade R tracksuits in the field</div>
+      </div>
+
+    </div>
+
+    <div class="gallery-actions">
+      <button type="button" class="btn btn-ghost gallery-toggle" id="galleryToggle" aria-expanded="false">
+        View more work
+      </button>
     </div>
   </div>
 </section>
@@ -445,7 +565,7 @@ textarea{resize:vertical;}
         <label for="serviceNeeded">Service needed</label>
         <select id="serviceNeeded" name="serviceNeeded" required>
           <option value="" disabled selected>Select a service</option>
-          <option value="School Uniforms">School Uniforms</option>
+          <option value="Uniforms (school, church, security, corporate)">Uniforms (school, church, security, corporate, Other)</option>
           <option value="Custom Embroidery">Custom Embroidery</option>
           <option value="Precision Printing">Precision Printing</option>
           <option value="Tailored Sewing">Tailored Sewing</option>
@@ -473,7 +593,7 @@ textarea{resize:vertical;}
         <svg class="btn-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4a12 12 0 0 0-10.3 18l-1.5 5.5 5.6-1.5A12 12 0 1 0 16 4z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M11 11.5c.3-1 1.2-1 1.7-.2l1 1.6c.3.5.2 1-.1 1.4l-.7.8c.6 1.4 1.7 2.5 3.1 3.1l.8-.7c.4-.3.9-.4 1.4-.1l1.6 1c.8.5.8 1.4-.2 1.7-2 .7-4.8-.2-7.2-2.6s-3.3-5.2-2.4-7.2z" fill="currentColor"/></svg>
         Send booking via WhatsApp
       </button>
-      <p class="form-note">You'll be redirected to WhatsApp (068 533 1751) with your booking details ready to send.</p>
+      <p class="form-note">You'll be redirected to WhatsApp (079 284 7777) with your booking details ready to send.</p>
     </form>
   </div>
 </section>
@@ -497,8 +617,8 @@ textarea{resize:vertical;}
 
     <div class="footer-col">
       <h5>Contact</h5>
-      <p><a href="https://wa.me/27685331751" target="_blank" rel="noopener">WhatsApp: 068 533 1751</a></p>
-      <p><a href="mailto:info@mammazettextile.co.za">info@mammazettextile.co.za</a></p>
+      <p><a href="https://wa.me/27792847777" target="_blank" rel="noopener">WhatsApp: 0792847777</a></p>
+      <p><a href="mailto:uhlanga17@gmail.com">uhlanga17@gmail.com</a></p>
       <p>Zevopix Building, 108 Bougeinvilla Street, Mtubatuba</p>
     </div>
 
@@ -521,7 +641,7 @@ textarea{resize:vertical;}
 
 <script>
 (function(){
-  var WHATSAPP_NUMBER = "27685331751";
+  var WHATSAPP_NUMBER = "27792847777";
 
   var yearSpan = document.getElementById("year");
   if (yearSpan) {
@@ -544,6 +664,31 @@ textarea{resize:vertical;}
       });
     });
   }
+  
+  /* ── Gallery "View more" ────────────────────────────── */
+var galleryToggle = document.getElementById("galleryToggle");
+if (galleryToggle) {
+  galleryToggle.addEventListener("click", function () {
+    var hiddenItems = document.querySelectorAll(".gallery-hidden");
+    var isExpanded = galleryToggle.getAttribute("aria-expanded") === "true";
+
+    hiddenItems.forEach(function (item) {
+      if (isExpanded) {
+        item.classList.add("gallery-hidden");
+      } else {
+        item.classList.remove("gallery-hidden");
+      }
+    });
+
+    galleryToggle.setAttribute("aria-expanded", isExpanded ? "false" : "true");
+    galleryToggle.textContent = isExpanded ? "View more work" : "Show less";
+
+    /* When collapsing, scroll back up to the top of the section */
+    if (isExpanded) {
+      document.getElementById("work").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  });
+}
 
   var bookingForm = document.getElementById("bookingForm");
 
