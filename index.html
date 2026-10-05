@@ -312,6 +312,61 @@ textarea{resize:vertical;}
   .gallery-actions{margin-top:32px;}
 }
 
+/* ── Video Section ("See how we work") ─────────────── */
+.video-section{background:var(--white);border-top:1px solid var(--canvas-deep);border-bottom:1px solid var(--canvas-deep);}
+.video-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:24px;
+}
+.video-card{
+  position:relative;
+  border-radius:3px;
+  overflow:hidden;
+  border:1px solid var(--canvas-deep);
+  background:#000;
+  aspect-ratio:16 / 10;
+  box-shadow:0 1px 2px rgba(28,37,48,0.06);
+  transition:box-shadow .3s ease, transform .3s ease;
+  cursor:pointer;
+}
+.video-card:hover{
+  box-shadow:0 12px 26px rgba(28,37,48,0.18);
+  transform:translateY(-4px);
+}
+.video-card video{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .5s ease;
+}
+.video-card:hover video{transform:scale(1.05);}
+.video-play-overlay{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+}
+.video-play-overlay svg{
+  width:72px;height:72px;
+  color:var(--white);
+  background:rgba(28,37,48,0.6);
+  border-radius:50%;
+  padding:16px;
+  backdrop-filter:blur(2px);
+  transition:background-color .25s ease, transform .25s ease;
+}
+.video-card:hover .video-play-overlay svg{
+  background:var(--maroon);
+  transform:scale(1.08);
+}
+.video-card-caption{
+  position:absolute;left:0;right:0;bottom:0;
+  background:linear-gradient(to top,rgba(28,37,48,0.92),transparent);
+  color:var(--white);
+  font-family:var(--sans);
+  font-size:14px;font-weight:600;letter-spacing:0.01em;
+  padding:36px 16px 14px;
+  pointer-events:none;
+}
+
 /* ── Lightbox ───────────────────────────────────────── */
 .lightbox{
   display:none;
@@ -392,6 +447,7 @@ textarea{resize:vertical;}
     <nav class="site-nav" id="siteNav">
       <a href="#services">Services</a>
       <a href="#work">The Work</a>
+      <a href="#video">Videos</a>
       <a href="#about">About</a>
       <a href="#book" class="nav-cta">Book a Fitting</a>
     </nav>
@@ -627,6 +683,36 @@ textarea{resize:vertical;}
   </div>
 </section>
 
+<!-- ── VIDEO SECTION: See how we work ── -->
+<section id="video" class="video-section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>See how we work</h2>
+      <p>A short look inside the workshop — cutting, stitching, embroidering and finishing every order by hand.</p>
+    </div>
+
+    <div class="video-grid">
+
+      <div class="video-card" data-video-src="images/vidoe 1.mp4">
+        <video src="images/vidoe 1.mp4" muted playsinline preload="metadata"></video>
+        <div class="video-play-overlay" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="video-card-caption">Inside the workshop</div>
+      </div>
+
+      <div class="video-card" data-video-src="images/vidoe 2.mp4">
+        <video src="images/vidoe 2.mp4" muted playsinline preload="metadata"></video>
+        <div class="video-play-overlay" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="video-card-caption">Embroidered school bags</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <section id="about" class="about">
   <div class="wrap about-inner">
     <div class="about-copy">
@@ -746,6 +832,7 @@ textarea{resize:vertical;}
       <h5>Explore</h5>
       <p><a href="#services">Services</a></p>
       <p><a href="#work">The Work</a></p>
+      <p><a href="#video">Videos</a></p>
       <p><a href="#book">Book a Fitting</a></p>
     </div>
   </div>
@@ -790,72 +877,107 @@ textarea{resize:vertical;}
       });
     });
   }
-  
-  /* ── Gallery "View more" ────────────────────────────── */
-var galleryToggle = document.getElementById("galleryToggle");
-if (galleryToggle) {
-  galleryToggle.addEventListener("click", function () {
-    var hiddenItems = document.querySelectorAll(".gallery-hidden");
-    var isExpanded = galleryToggle.getAttribute("aria-expanded") === "true";
 
-    hiddenItems.forEach(function (item) {
+  /* ── Gallery "View more" ────────────────────────────── */
+  var galleryToggle = document.getElementById("galleryToggle");
+  if (galleryToggle) {
+    galleryToggle.addEventListener("click", function () {
+      var hiddenItems = document.querySelectorAll(".gallery-hidden");
+      var isExpanded = galleryToggle.getAttribute("aria-expanded") === "true";
+
+      hiddenItems.forEach(function (item) {
+        if (isExpanded) {
+          item.classList.add("gallery-hidden");
+        } else {
+          item.classList.remove("gallery-hidden");
+        }
+      });
+
+      galleryToggle.setAttribute("aria-expanded", isExpanded ? "false" : "true");
+      galleryToggle.textContent = isExpanded ? "View more work" : "Show less";
+
       if (isExpanded) {
-        item.classList.add("gallery-hidden");
-      } else {
-        item.classList.remove("gallery-hidden");
+        document.getElementById("work").scrollIntoView({ behavior: "smooth", block: "start" });
       }
     });
-
-    galleryToggle.setAttribute("aria-expanded", isExpanded ? "false" : "true");
-    galleryToggle.textContent = isExpanded ? "View more work" : "Show less";
-
-    /* When collapsing, scroll back up to the top of the section */
-    if (isExpanded) {
-      document.getElementById("work").scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  });
-}
+  }
 
   /* ── Lightbox ───────────────────────────────────────── */
   var lightbox = document.getElementById("lightbox");
   var lightboxImg = document.getElementById("lightboxImg");
   var lightboxClose = document.getElementById("lightboxClose");
+  var lightboxVideo = null;
 
   if (lightbox && lightboxImg && lightboxClose) {
-    // Click on any gallery image to open it
+
+    // Ensure a video element exists inside the lightbox (created once)
+    function ensureVideoEl(){
+      if (!lightboxVideo) {
+        lightboxVideo = document.createElement("video");
+        lightboxVideo.id = "lightboxVideo";
+        lightboxVideo.controls = true;
+        lightboxVideo.autoplay = true;
+        lightboxVideo.playsInline = true;
+		lightboxVideo.muted = true; 
+        lightboxVideo.className = "lightbox-img";
+        lightbox.appendChild(lightboxVideo);
+      }
+      return lightboxVideo;
+    }
+
+    // ── Click on gallery images ──
     document.querySelectorAll(".gallery-item img").forEach(function(img){
       img.style.cursor = "zoom-in";
       img.addEventListener("click", function(){
+        if (lightboxVideo) {
+          lightboxVideo.pause();
+          lightboxVideo.style.display = "none";
+          lightboxVideo.src = "";
+        }
         lightboxImg.src = img.src;
-        lightboxImg.alt = img.alt;
+        lightboxImg.alt = img.alt || "";
+        lightboxImg.style.display = "block";
         lightbox.classList.add("open");
         lightbox.setAttribute("aria-hidden", "false");
         document.body.style.overflow = "hidden";
       });
     });
 
-    // Close function
+    // ── Click on video cards ──
+    document.querySelectorAll(".video-card").forEach(function(card){
+      card.addEventListener("click", function(){
+        var src = card.getAttribute("data-video-src");
+        if (!src) return;
+        var v = ensureVideoEl();
+        lightboxImg.style.display = "none";
+        v.src = src;
+        v.style.display = "block";
+        lightbox.classList.add("open");
+        lightbox.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      });
+    });
+
     function closeLightbox(){
       lightbox.classList.remove("open");
       lightbox.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
+      if (lightboxVideo) {
+        lightboxVideo.pause();
+        lightboxVideo.src = "";
+      }
       setTimeout(function(){ lightboxImg.src = ""; }, 250);
     }
 
-    // Click X to close
     lightboxClose.addEventListener("click", function(e){
       e.stopPropagation();
       closeLightbox();
     });
 
-    // Click outside the image to close
     lightbox.addEventListener("click", function(e){
-      if (e.target === lightbox) {
-        closeLightbox();
-      }
+      if (e.target === lightbox) closeLightbox();
     });
 
-    // Press Escape to close
     document.addEventListener("keydown", function(e){
       if (e.key === "Escape" && lightbox.classList.contains("open")) {
         closeLightbox();
